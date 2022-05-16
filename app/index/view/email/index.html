@@ -1,0 +1,59 @@
+{include file="Public/header" title="邮局"/}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<!-- 内容标题 -->
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box">
+      <h4 class="page-title">表白卡邮局</h4>
+    </div>
+  </div>
+</div>
+<!-- 内容标题 -->
+<!-- 表单 -->
+<div class="account-pages mt-5 mb-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card">
+          <!-- Logo -->
+          <div class="btn btn-block btn-danger">
+            <h1 style="font-size:20px">信封</h1>
+          </div>
+          <div class="card-body p-4">
+            <div class="text-center w-75 m-auto">
+              <h4 class="text-dark-50 text-center mt-3 font-weight-bold">请认真填写哦</h4>
+            </div>
+            <!--表单-->
+            <form>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label class="col-form-label">表白卡ID</label>
+                  <input name="id" type="text" class="form-control" placeholder="必填" value="{$id}">
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="col-form-label">TA的邮箱</label>
+                  <input name="toEmail" type="email" class="form-control" placeholder="必填">
+                </div>
+              </div>
+              <button type="submit" id="EmailSubmit" class="btn btn-danger text-center">提交</button>
+            </form>
+            <!--表单-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 内容标题 -->
+  {include file="Public/footer" /}

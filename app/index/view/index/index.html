@@ -1,0 +1,121 @@
+{include file="Public/header" title="首页"/}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<!-- 内容标题 -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">首页</h4>
+        </div>
+    </div>
+</div>
+
+<!-- 内容标题 -->
+<div class="mt-1 mb-1">
+
+    <div class="col-12">
+
+        <!-- 便签卡 -->
+        <div class="text-center">
+            <h1><strong>{:$config.title}</strong></h1><br>
+            <div class="btn btn-block btn-danger">
+                <h1 style="font-size:20px">站长留下的便签</h1>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-deck-wrapper">
+                        <div class="card-deck">
+                            <div class="card d-block">
+                                <div class="card-body">
+                                    <p class="card-text"><strong></strong></p><div style="text-align: center;"><strong>{:$config.notice}</strong></div><p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+        <!-- 便签卡 -->
+        <!-- 表白卡排名 -->
+        <div class="col-12">
+            <div class="text-center">
+                <h1 style="font-size:20px">人气榜</h1>
+            </div><br>
+            <div class="row">
+{volist name="list" id="vo"}
+                <div class="col-md-6 col-lg-3">
+                    <div class="card d-block">
+                        <div class="card-body">
+                            <a href="{:url('/index/card/'.$vo.id)}" style="color: #595959;"><h5 class="card-title">
+                                {empty name="$vo.name_1"}匿名{else /}{:str($vo.name_1)}{/empty}的表白卡
+                                <span class="foot-right">
+                                    <span class="badge badge-{empty name='$vo.name_1'}light{else /}danger{/empty}">{empty name="$vo.name_1"}匿名{else /}实名{/empty}</span>
+								</span>
+                            </h5>
+                            <h6 class="card-subtitle text-muted">{empty name="$vo.name_1"}匿名{else /}{:str($vo.name_1)}{/empty} 表白 {:str($vo.name_2)}</h6></a>
+{empty name="$vo.img"}
+                            <br>
+{else /}
+                        </div>
+                        <a href="{:url('/index/card/'.$vo.id)}" style="color: #595959;"><img class="img-fluid" src="{$vo.img}" alt="{$vo.id}"></a>
+                        <div class="card-body">{/empty}
+                            <a href="{:url('/index/card/'.$vo.id)}">
+                                <p class="card-text">{:str($vo.cont)}</p>
+                            </a>
+                            <br>
+                            <span class="foot-left mdi mdi-comment-multiple"></span>
+                            <span class="foot-left">评论{$vo.comment}</span>
+                            <!--点赞-->
+                            <a href="javascript:" class="foot-right dza" style="{$vo.zan_state}" rel="{$vo.id}">
+                                <span class=" mdi mdi-cards-heart" id="{$vo.id}" style="color: {$vo.zan_colour};"></span>
+                                <span class="foot-right dianzan" style="color: {$vo.zan_colour};">喜欢{$vo.zan}</span>
+                            </a>
+                            <!--点赞-->
+                            <br>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div><!-- end col -->
+                {/volist}
+            </div>
+            <!-- 表白卡 -->
+
+            <!-- 全站数据 -->
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <div class="text-center mt-3 pl-1 pr-1">
+                        <i class="mdi mdi-heart-box btn-danger maintenance-icon text-white mb-2"></i>
+                        <h5 class="text-uppercase">{:$card_count}张</h5>
+                        <p class="text-muted">表白卡总数</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center mt-3 pl-1 pr-1">
+                        <i class="mdi mdi-tooltip-text btn-danger maintenance-icon text-white mb-2"></i>
+                        <h5 class="text-uppercase">{:$comment_count}条</h5>
+                        <p class="text-muted">评论总数</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center mt-3 pl-1 pr-1">
+                        <i class="mdi mdi-thumb-up  btn-danger maintenance-icon text-white mb-2"></i>
+                        <h5 class="text-uppercase">{:$like_count}个</h5>
+                        <p class="text-muted">点赞总数</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 全站数据 -->
+        </div>
+    </div>
+</div>
+{include file="Public/footer" /}

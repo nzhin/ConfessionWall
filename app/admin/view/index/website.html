@@ -1,0 +1,108 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+        <div class="layui-card-header">网站信息</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label>网站名称：</label>
+                        <input name="webname" value="{$web.title}" placeholder="请输入网站名称" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item" style="margin-bottom: 14px;">
+                        <label>网站关键词：</label>
+                        <input name="webkeywords" value="{$web.webkeywords}" id="keywords" class="layui-hide"/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>网站描述：</label>
+                        <input name="webdescription" value="{$web.webdescription}" placeholder="请输入网站描述" class="layui-input" lay-verType="tips">
+                    </div>
+                    <div class="layui-form-item">
+                        <label>建站时间：</label>
+                        <input id="Nathan_Time" name="webtime" value="{$web.webtime}" placeholder="请选择网站建站时间" class="layui-input icon-date" autocomplete="off" lay-verType="tips">
+                    </div>
+                    <div class="layui-form-item">
+                        <label>站长QQ：</label>
+                        <input name="webqq" value="{$web.qq}" placeholder="请输入站长QQ" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required|h5" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>站点域名：</label>
+                        <input name="url" value="{$web.url}" placeholder="请输入站点域名" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>网站公告：</label>
+                        <textarea name="notice" placeholder="请输入网站公告" class="layui-textarea" lay-verType="tips">{:htmlspecialchars_decode($web.notice)}</textarea>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>版权：</label>
+                        <input name="copyright" value="{$web.copyright}" placeholder="请输入版权" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>违禁词：</label>
+                        <input name="system_rule" value="{$web.system_rule}" placeholder="请输入违禁词" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>网站状态</label>
+                        <div>
+                            <input type="radio" name="state" value="1" title="开启" {eq name="web.state" value="1"}checked{/eq}>
+                            <input type="radio" name="state" value="0" title="关闭" {eq name="web.state" value="0"}checked{/eq}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" lay-submit lay-filter="website">确认</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- js部分 -->
+{include file='public/script'}
+
+<script>
+    layui.use(['jquery', 'tagsInput' , 'layer', 'form', 'laydate'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var laydate = layui.laydate;
+
+        $('#keywords').tagsInput({removeWithBackspace: true});
+        form.on('submit(website)', function (obj) {
+            var loadIndex = layer.msg('请求中...', {icon: 16, shade: 0.01, time: false});
+            $.post('{:url(\'/Ajax/website\')}', obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.code === 1) {
+                    layer.msg(res.msg, {icon: 6, time: 1500});
+                } else {
+                    layer.msg(res.msg, {icon: 5, anim: 6});
+                }
+            }, 'json');
+            return false;
+        });
+
+        /* 渲染laydate */
+        laydate.render({
+            elem: '#Nathan_Time',
+            trigger: 'click'
+        });
+    });
+
+</script>
+</body>
+</html>

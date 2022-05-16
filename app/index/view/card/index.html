@@ -1,0 +1,180 @@
+{include file="Public/header" title="详情页"/}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<!-- 内容标题 -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">
+                {empty name="$data.name_1"}匿名{else /}{:str($data.name_1)}{/empty}的表白卡
+                <small class="text-muted">{$data.time}</small>
+                <span class="foot-right">
+                    <span class="badge badge-{empty name='$data.name_1'}light{else /}danger{/empty}">{empty name="$data.name_1"}匿名{else /}实名{/empty}</span>
+                </span>
+            </h4>
+        </div>
+    </div>
+</div>
+<!-- 内容标题 -->
+<!-- 主卡片 -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card bg-danger">
+            <div class="card-body profile-user-box">
+                <div class="row">
+                    <!-- 内 -->
+                    <div class="col-sm-4">
+                        <h4 class="mt-1 mb-1 text-white">{:str($data.name_1)}</h4>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h1 class="mt-1 mb-1 text-white"><i class="mdi mdi-heart-pulse"></i></h1>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <h4 class="mt-1 mb-1 text-white">{:str($data.name_2)}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 主卡片 -->
+<div class="row">
+    <div class="col-md-8">
+        {if $data.img !== false}
+        <!-- 图片卡-->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">{:str($data.name_1)}上传的图卡</h4>
+                <div class="table-responsive">
+                    <img class="card-img-top" src="{$data.img}">
+                </div> <!-- end table responsive-->
+            </div> <!-- end col-->
+        </div>
+        <!-- 图片卡-->
+        {/if}
+        <!-- 内容卡 -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mt-0 mb-3">表白内容</h4>
+                <p class="text-muted font-13">
+                    {:str($data.cont)}
+                </p>
+
+                <hr>
+
+                <div class="text-left">
+                    <br>
+                    <!--点赞-->
+                    <a href="javascript:;" class="foot-right dza" style="{$zan_state}" rel="{$data.id}">
+                        <span class=" mdi mdi-cards-heart" id="{$data.id}" style="color: {$zan_colour};"></span>
+                        <span class="foot-right dianzan"  style="color: {$zan_colour};">喜欢{$data.zan}</span>
+                    </a>
+                    <!--点赞-->
+                    <br>
+                </div>
+            </div>
+        </div>
+        <!-- 内容卡 -->
+    </div><!-- end col -->
+
+    <!-- 邮局快捷键 -->
+    <div class="col-md-4">
+        <a href="{:url('/index/email/'.$data.id)}">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <div class="toll-free-box text-center">
+                        <h4> <i class="mdi mdi mdi-email-open"></i> I D : {$data.id}</h4>
+                    </div>
+                </div> <!-- end card-body-->
+            </div>
+        </a>
+        <!-- 评论框 -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">评论</h4>
+                <div class="table-responsive">
+                    <form style="margin: 0px;padding: 0px;z-index: 999;">
+                        <input name="cardid" style="display: none;" value="{$data.id}" />
+                        <div class="form-group mb-3">
+                            <input name="name" class="form-control" placeholder="名字" value="" style="width: 98%;margin-left: 1%;"/>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input name="cont" type="text" placeholder="内容..." class="form-control" style="width: 98%;margin-left: 1%;"/>
+                        </div>
+                        <button id="ComSubmit" type="submit" value="提交" class="foot-right btn btn-danger">提交</button>
+                    </form>
+
+                </div> <!-- end table responsive-->
+            </div> <!-- end col-->
+        </div> <!-- end row-->
+        <!-- 评论框 -->
+        <!-- 评论卡 -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">评论</span><small class="text-muted foot-right">共{$data.comment}条</small></h4>
+                <div class="inbox-widget">
+                    {volist name="list" id="vo"}
+                    <div class="inbox-item">
+                        <p class="inbox-item-author">{:str($vo.name)}</p>
+                        <p class="inbox-item-text">{:str($vo.cont)}</p>
+                        <small class="text-muted">{:str($vo.id)}#&nbsp;&nbsp;{:str($vo.time)}</small>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+        </div>
+        <!-- 评论卡 -->
+
+        <!-- 翻页 -->
+        <div class="text-center">
+            {if (empty($_GET['page'])) or ($_GET['page'] === '1')}
+            <div class="btn-group mb-2">
+                <button type="button" class="btn btn-danger">{$page_now_page}</button>
+            </div>
+            {if $page_totalPage > $page_now_page}
+            <div class="btn-group mb-2">
+                <a href="?page={$page_now_page+1}"><button type="button" class="btn btn-light">{$page_now_page+1}</button></a>
+            </div>
+            <div class="btn-group mb-2">
+                <a href="?page={$page_now_page+2}"><button type="button" class="btn btn-light">{$page_now_page+2}</button></a>
+            </div>
+            {/if}
+            {/if}
+            {if (!empty($_GET['page'])) and ($_GET['page'] !== '1')}
+            <div class="btn-group mb-2">
+                <a href="?page={$page_now_page-1}"><button type="button" class="btn btn-light">上一页</button></a>
+            </div>
+            <div class="btn-group mb-2">
+                <a href="?page={$page_now_page-1}"><button type="button" class="btn btn-light">{$page_now_page-1}</button></a>
+            </div>
+            <div class="btn-group mb-2">
+                <button type="button" class="btn btn-danger">{$page_now_page}</button>
+            </div>
+            {/if}
+            {if $page_totalPage > $page_now_page}
+            {if (!empty($_GET['page'])) and ($_GET['page'] !== '1')}
+            <div class="btn-group mb-2">
+                <a href="?page={$page_now_page+1}"><button type="button" class="btn btn-light">{$page_now_page+1}</button></a>
+            </div>
+            {/if}
+            <div class="btn-group mb-2">
+                <a href="?page={$page_now_page+1}"><button type="button" class="btn btn-light">下一页</button></a>
+            </div>
+            {/if}
+        </div>
+        <br><br>
+        <!-- 翻页 -->
+    </div>
+</div>
+{include file="Public/footer" /}

@@ -1,0 +1,65 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+        <div class="layui-card-header">评论修改</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item" hidden>
+                        <input name="id" value="{$data.id}" class="layui-input" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>评论者：</label>
+                        <input name="name"  value="{$data.name}" placeholder="请输入评论者" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>内容：</label>
+                        <input name="cont" value="{$data.cont}" placeholder="请输入内容" class="layui-input" lay-verType="tips" lay-verify="required" required>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" lay-submit lay-filter="app_edit">确认</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- js部分 -->
+{include file='public/script'}
+<script>
+    layui.use(['layer', 'form','formX'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        form.on('submit(app_edit)', function (obj) {
+            var loadIndex = layer.msg('正在处理中，请稍后...');
+            $.post('{:url(\'/Ajax/comment_edit\')}', obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.code === 1) {
+                    layer.msg(res.msg, {icon: 6, time: 1500});
+                } else {
+                    layer.msg(res.msg, {icon: 5, anim: 6});
+                }
+            }, 'json');
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

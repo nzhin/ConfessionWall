@@ -1,0 +1,172 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<style>
+    /* 基本信息 */
+    #userInfoForm .layui-form-item {
+        margin-bottom: 25px;
+    }
+
+    /* 账号绑定 */
+    .user-bd-list-item {
+        padding: 14px 60px 14px 10px;
+        border-bottom: 1px solid #e8e8e8;
+        position: relative;
+    }
+
+    .user-bd-list-item .user-bd-list-lable {
+        color: #333;
+        margin-bottom: 4px;
+    }
+
+    .user-bd-list-item .user-bd-list-oper {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        margin-top: -8px;
+        cursor: pointer;
+    }
+
+    .user-bd-list-item .user-bd-list-img {
+        width: 48px;
+        height: 48px;
+        line-height: 48px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        margin-top: -24px;
+    }
+
+    .user-bd-list-item .user-bd-list-img + .user-bd-list-content {
+        margin-left: 68px;
+    }
+</style>
+</head>
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md12">
+            <div class="layui-card">
+                <!-- 选项卡开始 -->
+                <div class="layui-tab layui-tab-brief" lay-filter="userInfoTab">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">基本信息</li>
+                        <li>账号绑定</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <!-- tab1 -->
+                        <div class="layui-tab-item layui-show">
+                            <form class="layui-form">
+                                <div class="layui-form-item" hidden>
+                                    <input name="id" value="{$self.id}" class="layui-input" lay-verify="required" required/>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">用户名:</label>
+                                    <div class="layui-input-block">
+                                        <input name="adminname" placeholder="请输入用户名" value="{$self.username}" class="layui-input" minlength="5" lay-verify="required|h5" required/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">QQ:</label>
+                                    <div class="layui-input-block">
+                                        <input name="qq" value="{$self.qq}" placeholder="请输入QQ" class="layui-input" maxlength="10" lay-verify="required|h5" required/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱:</label>
+                                    <div class="layui-input-block">
+                                        <input name="email" placeholder="{$self.email|default = '您没有填写邮箱哦~'}" value="{$self.email}" class="layui-input" lay-verify="emailX">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">密码:</label>
+                                    <div class="layui-input-block">
+                                        <input name="password" placeholder="请输入修改后密码(不修改请留空)" class="layui-input" minlength="5" lay-verify="h5">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-filter="self_edit" lay-submit>更新基本信息
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- tab1 -->
+                        <div class="layui-tab-item" style="padding-bottom: 20px;">
+                            <div class="user-bd-list layui-text">
+                                <div class="user-bd-list-item">
+                                    <div class="user-bd-list-lable">我的QQ</div>
+                                    <div class="user-bd-list-text">已绑定QQ号：{$self.qq}</div>
+                                </div>
+                                <div class="user-bd-list-item">
+                                    <div class="user-bd-list-lable">密保邮箱</div>
+                                    <div class="user-bd-list-text">已绑定邮箱：{$self.email|default = '您没有填写邮箱哦~'}</div>
+                                </div>
+                                <div class="user-bd-list-item">
+                                    <div class="user-bd-list-img">
+                                        <i class="layui-icon layui-icon-login-qq"
+                                           style="color: #3492ED;font-size: 48px;"></i>
+                                    </div>
+                                    <div class="user-bd-list-content">
+                                        {empty name='admin.qqopenid'}
+                                        <div class="user-bd-list-lable">绑定QQ快捷登录</div>
+                                        <div class="user-bd-list-text">当前未绑定QQ账号快捷登录</div>
+                                    </div>
+                                    <a class="user-bd-list-oper layui-btn" href="{:url('/Ajax/bindqq')}">绑定QQ登录</a>
+                                    {else}
+                                    <div class="user-bd-list-lable">绑定QQ快捷登录</div>
+                                    <div class="user-bd-list-text">当前已绑定QQ账号快捷登录</div>
+                                </div>
+                                <a class="user-bd-list-oper layui-btn" href="{:url('/Ajax/bindqq')}">重新绑定QQ登录</a>
+                                {/empty}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- //选项卡结束 -->
+        </div>
+    </div>
+</div>
+
+<!-- js部分 -->
+{include file='public/script'}
+<script>
+    layui.use(['layer', 'form', 'element','formX'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        form.on('submit(self_edit)', function (obj) {
+            var loadIndex = layer.msg('正在处理中，请稍后...');
+            $.post('{:url(\'/Ajax/self_edit\')}', obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.code === 1) {
+                    layer.msg(res.msg, {icon: 6, time: 1500}, function () {
+                        location.href = '{:url(\'/index/login\')}'
+                    });
+                    parent.location.reload();
+                } else {
+                    layer.msg(res.msg, {icon: 5, anim: 6});
+                }
+            }, 'json');
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

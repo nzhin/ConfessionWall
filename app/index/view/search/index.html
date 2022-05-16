@@ -1,0 +1,51 @@
+{include file="Public/header" title="搜索"/}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<link rel="stylesheet" href="../../static/layui/css/layui.css"/>
+<!-- 内容标题 -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">搜索</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Form row -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">搜索表白卡</h4>
+                <p class="text-muted font-13">可搜索表白卡的ID，双方姓名，内容，时间</p>
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label class="col-form-label">搜索内容</label>
+                            <input name="content" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </div>
+                    <button type="submit" id="searchSubmit" class="btn btn-danger">搜索</button>
+                </form>
+            </div> <!-- end card-body -->
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+<div class="row">
+    <div class="col-12" id="searchTable">
+    </div><!-- end col-->
+</div>
+<!-- end row-->
+{include file="Public/footer" /}

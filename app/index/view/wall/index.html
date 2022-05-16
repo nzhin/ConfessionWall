@@ -1,0 +1,101 @@
+{include file="Public/header" title="表白墙"/}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<!-- 内容标题 -->
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box">
+      <h4 class="page-title">表白墙</h4>
+    </div>
+  </div>
+</div>
+
+<!-- 表白卡 -->
+<div class="row">
+  {volist name="list" id="vo"}
+  <div class="col-md-6 col-lg-3">
+    <div class="card d-block">
+      <div class="card-body">
+        <a href="{:url('/index/card/'.$vo.id)}" style="color: #595959;"><h5 class="card-title">
+          {empty name="$vo.name_1"}匿名{else /}{:str($vo.name_1)}{/empty}的表白卡
+          <span class="foot-right">
+                                    <span class="badge badge-{empty name='$vo.name_1'}light{else /}danger{/empty}">{empty name="$vo.name_1"}匿名{else /}实名{/empty}</span>
+								</span>
+        </h5>
+        <h6 class="card-subtitle text-muted">{empty name="$vo.name_1"}匿名{else /}{:str($vo.name_1)}{/empty} 表白 {:str($vo.name_2)}</h6></a>
+        {empty name="$vo.img"}
+        <br>
+        {else /}
+      </div>
+      <a href="{:url('/index/card/'.$vo.id)}" style="color: #595959;"><img class="img-fluid" src="{$vo.img}" alt="{$vo.id}"></a>
+      <div class="card-body">{/empty}
+        <a href="{:url('/index/card/'.$vo.id)}">
+          <p class="card-text">{:str($vo.cont)}</p>
+        </a>
+        <br>
+        <span class="foot-left mdi mdi-comment-multiple"></span>
+        <span class="foot-left">评论{$vo.comment}</span>
+        <!--点赞-->
+        <a href="javascript:" class="foot-right dza" style="{$vo.zan_state}" rel="{$vo.id}">
+          <span class=" mdi mdi-cards-heart" id="{$vo.id}" style="color: {$vo.zan_colour};"></span>
+          <span class="foot-right dianzan"  style="color: {$vo.zan_colour};">喜欢{$vo.zan}</span>
+        </a>
+        <!--点赞-->
+        <br>
+      </div> <!-- end card-body-->
+    </div> <!-- end card-->
+  </div><!-- end col -->
+  {/volist}
+</div>
+<!-- 表白卡 -->
+<!-- 翻页 -->
+<div class="text-center">
+  {if (empty($_GET['page'])) or ($_GET['page'] === '1')}
+  <div class="btn-group mb-2">
+    <button type="button" class="btn btn-danger">{$page_now_page}</button>
+  </div>
+  {if $page_totalPage > $page_now_page}
+  <div class="btn-group mb-2">
+    <a href="?page={$page_now_page+1}"><button type="button" class="btn btn-light">{$page_now_page+1}</button></a>
+  </div>
+  <div class="btn-group mb-2">
+    <a href="?page={$page_now_page+2}"><button type="button" class="btn btn-light">{$page_now_page+2}</button></a>
+  </div>
+  {/if}
+  {/if}
+  {if (!empty($_GET['page'])) and ($_GET['page'] !== '1')}
+  <div class="btn-group mb-2">
+    <a href="?page={$page_now_page-1}"><button type="button" class="btn btn-light">上一页</button></a>
+  </div>
+  <div class="btn-group mb-2">
+    <a href="?page={$page_now_page-1}"><button type="button" class="btn btn-light">{$page_now_page-1}</button></a>
+  </div>
+  <div class="btn-group mb-2">
+    <button type="button" class="btn btn-danger">{$page_now_page}</button>
+  </div>
+  {/if}
+  {if $page_totalPage > $page_now_page}
+  {if (!empty($_GET['page'])) and ($_GET['page'] !== '1')}
+  <div class="btn-group mb-2">
+    <a href="?page={$page_now_page+1}"><button type="button" class="btn btn-light">{$page_now_page+1}</button></a>
+  </div>
+  {/if}
+  <div class="btn-group mb-2">
+    <a href="?page={$page_now_page+1}"><button type="button" class="btn btn-light">下一页</button></a>
+  </div>
+  {/if}
+</div>
+<br><br>
+<!-- 翻页 -->
+{include file="Public/footer" /}

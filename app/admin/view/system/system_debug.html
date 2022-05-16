@@ -1,0 +1,75 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header" lay-tips="调试模式工具状态：{$debug?'开启中':'关闭中'}" lay-bg="#803ed9" lay-bgImg="linear-gradient(to right,#8510FF,#D025C2,#FF8B2D,#F64E2C)" lay-offset="5">调试模式工具
+            <span class="layui-btn layui-btn-xs" style="margin-top: 10px;float: right;">
+                    {$debug?'开启中':'关闭中'}
+            </span>
+        </div>
+        <div class="layui-card-body text-center" style="padding: 26px 0;height: 126px;box-sizing: border-box;">
+            <p class="layui-text">
+                开启调试模式后出现报错可看到详细信息<br>（非必要情况下切勿开启）</p>
+            <button onclick="debug('{$debug?\'0\':\'1\'}')" class="layui-btn">{$debug?'关闭调试模式':'开启调试模式'}</button>
+        </div>
+    </div>
+    <div class="layui-card">
+        <div class="layui-card-header">安全信息</div>
+        <div class="layui-card-body layui-text">
+            <table class="layui-table layui-text">
+                <colgroup>
+                    <col width="90">
+                    <col>
+                </colgroup>
+                <tbody>
+                {foreach $sec_msg as $value}
+                {$value|raw}
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- js部分 -->
+{include file='public/script'}
+<script>
+function debug(state) {
+    layui.use(['layer'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        layer.msg('正在处理中，请稍后...');
+        $.ajax({
+            type:'POST',
+            url:'{:url(\'/Ajax/system_debug\')}',
+            data:{
+                state:state
+            },
+            dataType:'json',
+            success:function (data){
+                if(data.code == 1){
+                    layer.msg(data.msg, {icon: 6, time: 1500});
+                    parent.location.reload();
+                }else{
+                    layer.msg(data.msg, {icon: 5, anim: 6});
+                }
+            }
+        });
+    });
+}
+</script>
+</body>
+</html>

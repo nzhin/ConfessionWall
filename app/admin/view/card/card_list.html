@@ -1,0 +1,229 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<style>
+    #Nzhin_Table + .layui-table-view .layui-table-body tbody > tr > td {
+        padding: 0;
+    }
+
+    #Nzhin_Table + .layui-table-view .layui-table-body tbody > tr > td > .layui-table-cell {
+        height: 48px;
+        line-height: 48px;
+    }
+
+    .tb-img-circle {
+        width: 80px;
+        height: 40px;
+        cursor: zoom-in;
+    }
+</style>
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+        <div class="layui-card-header">表白卡列表</div>
+        <div class="layui-card-body">
+            <!-- 表格工具栏 -->
+            <form class="layui-form toolbar">
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">查询类型:</label>
+                        <div class="layui-input-inline">
+                            <select name="type" lay-verType="tips" lay-verify="required" required/>
+                                <option value="">请选择查询类型</option>
+                                <option value="name_1">写卡人</option>
+                                <option value="name_2">写卡对象</option>
+                                <option value="cont">内容</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">查询内容:</label>
+                        <div class="layui-input-inline">
+                            <input name="value" class="layui-input" placeholder="输入查询内容" lay-verType="tips" lay-verify="required" required/>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">&emsp;
+                        <button class="layui-btn icon-btn" lay-filter="Nzhin_Search" lay-submit>
+                            <i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- 数据表格 -->
+            <table id="Nzhin_Table" lay-filter="Nzhin_Table"></table>
+        </div>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="Nzhin_Function">
+    <a class="layui-btn layui-btn layui-btn-xs" onclick="edit('{{d.id}}')">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- js部分 -->
+{include file='public/script'}
+<script type="text/html" id="Nzhin_TbState">
+    <input type="checkbox" lay-filter="Nzhin_TbStateCk" value="{{d.id}}" lay-skin="switch"
+           lay-text="正常|异常" {{d.state==1?'checked':''}} style="display: none;"/>
+    <p style="display: none;">{{d.state==0?'正常':'异常'}}</p>
+</script>
+<script>
+    function edit(id){
+        layui.admin.open({
+            type: 2,
+            title: '修改表白卡(ID:'+id+')',
+            shade: 0,
+            maxmin: true,
+            resize: true,
+            area: ['90%', '80%'],
+            content: '{:url(\'/Card/card_edit\')}?id='+id
+        });
+    }
+    function add(){
+        layui.admin.open({
+            type: 2,
+            title: '添加表白卡',
+            shade: 0,
+            maxmin: true,
+            resize: true,
+            area: ['90%', '80%'],
+            content: '{:url(\'/Card/card_add\')}'
+        });
+    }
+    layui.use(['layer', 'form', 'table', 'tableX', 'util','formX'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var tableX = layui.tableX;
+        var util = layui.util;
+        var admin = layui.admin;
+        /* 渲染表格 */
+        var insTb = table.render({
+            elem: '#Nzhin_Table',
+            url: '{:url(\'/Ajax/card_list\')}',
+            page: true,
+            toolbar: ['<p>',
+                '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>',
+                '</p>'].join(''),
+            cellMinWidth: 100,
+            cols: [[
+                {type: 'checkbox'},
+                {type: 'numbers'},
+                {field: 'id', title: 'ID', align: 'center', sort: true, hide: true},
+                {field: 'name_1', title: '写卡人', align: 'center', sort: true},
+                {field: 'name_2', title: '写卡对象', align: 'center', sort: true},
+                {field: 'cont', title: '内容', align: 'center', sort: true},
+                {
+                    title: '图片', templet: function (d) {
+                        var url = d.img;
+                        return '<img data-index="' + (d.LAY_INDEX - 1) + '" src="' + url + '" class="tb-img-circle" tb-img alt=""/>';
+                    }, align: 'center', width: 150, unresize: true
+                },
+                {field: 'zan', title: '赞数', align: 'center', sort: true},
+                {field: 'comment', title: '评论数', align: 'center', sort: true},
+                {field: 'ip', title: 'IP', align: 'center', sort: true},
+                {field: 'time', title: '创建时间', align: 'center', sort: true},
+                {field: 'state', title: '状态', templet: '#Nzhin_TbState', sort: true, width: 100},
+                {title: '操作', toolbar: '#Nzhin_Function', align: 'center', width: 200}
+            ]]
+        });
+
+        /* 表格搜索 */
+        form.on('submit(Nzhin_Search)', function (data) {
+            insTb.reload({where: data.field, page: {curr: 1}});
+            return false;
+        });
+
+
+        /* 修改状态 */
+        form.on('switch(Nzhin_TbStateCk)', function (obj) {
+            var loadIndex = layer.load(2);
+            $.post('{:url(\'/Ajax/card_state\')}', {
+                id: obj.elem.value,
+            }, function (res) {
+                layer.close(loadIndex);
+                if (res.code === 1) {
+                    layer.msg(res.msg, {icon: 1});
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+                    $(obj.elem).prop('checked', !obj.elem.checked);
+                    form.render('checkbox');
+                }
+            }, 'json');
+        });
+
+
+        /* 表格工具条点击事件 */
+        table.on('tool(Nzhin_Table)', function (obj) {
+            if (obj.event === 'del') { // 删除
+                doDel(obj);
+            }
+        });
+
+        /* 表格头工具栏点击事件 */
+        table.on('toolbar(Nzhin_Table)', function (obj) {
+            if (obj.event === 'del') { // 删除
+                var checkRows = table.checkStatus('Nzhin_Table');
+                if (checkRows.data.length === 0) {
+                    layer.msg('请选择要删除的数据', {icon: 2});
+                    return;
+                }
+                var ids = checkRows.data.map(function (d) {
+                    return d.id;
+                });
+                doDel({ids: ids});
+            }
+        });
+
+        /* 删除 */
+        function doDel(obj) {
+            layer.confirm('确定要删除选中数据吗？', {
+                skin: 'layui-layer-admin',
+                shade: .1
+            }, function (i) {
+                layer.close(i);
+                var loadIndex = layer.load(2);
+                $.post('{:url(\'/Ajax/card_del\')}', {
+                    id: obj.data ? obj.data.id : '',
+                    url: obj.data ? obj.data.url : '',
+                    ids: obj.ids ? obj.ids.join(',') : ''
+                }, function (res) {
+                    layer.close(loadIndex);
+                    if (res.code === 1) {
+                        layer.msg(res.msg, {icon: 1});
+                        insTb.reload({page: {curr: 1}});
+                    } else {
+                        layer.msg(res.msg, {icon: 2});
+                    }
+                }, 'json');
+            });
+        }
+        /* 点击图片放大 */
+        $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+            var imgList = table.cache['Nzhin_Table'].map(function (d) {
+                return {
+                    alt: d.name,
+                    src: d.img
+                }
+            });
+            layer.photos({photos: {data: imgList, start: $(this).data('index')}, shade: .1, closeBtn: true});
+        });
+    });
+</script>
+</body>
+</html>

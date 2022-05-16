@@ -1,0 +1,495 @@
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<title>{$System.Name} - 程序安装</title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+<link href="//static.nanyinet.com/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="//static.nanyinet.com/static/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="//static.nanyinet.com/static/css/style.min.css" rel="stylesheet">
+</head>
+<style>
+    .install-header > h3 {
+        margin: 54px 0;
+        width: 210px;
+        height: 53px;
+        display: inline-block;
+    }
+    .logo-header > img {
+        margin: 100px 0;
+        width: 210px;
+        height: 36px;
+    }
+    
+    .guide-box {
+        padding: 32px 0;
+        border-top: 5px solid #48b0f7;
+    }
+
+    .step-dots a, .step-dots a::before {
+        background-color: #f4f4f4;
+    }
+
+    .site-content {
+        margin: 0 20%;
+        width: 60%;
+    }
+
+    .nav-step {
+        margin-bottom: 0;
+    }
+
+    .nav-step-content > .nav-step-pane > .card > .card-body {
+        padding-top: 24px;
+    }
+
+    .input-group.m-b-10.info-title {
+        width: 100%;
+        border-bottom: 1px solid #f1f1f3;
+        padding-bottom: 5px;
+    }
+
+    .input-group-text {
+        background-color: #fff0;
+        border: 1px solid #fff0;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .input-group-text-right {
+        white-space: nowrap;
+        vertical-align: middle;
+        display: table-cell;
+        box-sizing: border-box;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        padding: 6px 0;
+        float: right !important;
+    }
+
+    #server-info .col-md-4, #install-complete .col-md-6 {
+        display: inline-block;
+        padding-right: 0;
+        padding-left: 0;
+        width: 25%;
+    }
+
+    #install-complete .input-group-text {
+        width: 35%;
+    }
+
+    #install-complete .input-group-text:first-child {
+        text-align: right;
+        padding-right: 12.5px;
+    }
+
+    #install-complete .input-group-text:last-child {
+        text-align: left;
+        padding-left: 12.5px;
+    }
+
+    #install-config-form .form-group {
+        margin-bottom: 15px !important;
+        display: grid;
+    }
+
+    @media (max-width: 769px) {
+        .install-header > h3 {
+            margin: 20px 0;
+        }
+        
+        .logo-header > img {
+            margin: 20px 0;
+        }
+
+        .site-content {
+            margin: 0;
+            width: 100%;
+        }
+
+        .input-group.m-b-10.info-title {
+            padding-bottom: 0;
+        }
+    }
+</style>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <div class="logo-header text-center">
+            <img src="/logo.png">
+        </div>
+        <div class="container-fluid site-content">
+            <div class="card">
+                <div class="card-body text-center auth-nav guide-box">
+                    <ul class="nav-step step-dots">
+                        <li class="nav-step-item active">
+                            <span>检测</span>
+                            <a class="active"></a>
+                        </li>
+
+                        <li class="nav-step-item">
+                            <span>配置</span>
+                            <a></a>
+                        </li>
+                        <li class="nav-step-item">
+                            <span>安装</span>
+                            <a></a>
+                        </li>
+                        <li class="nav-step-item">
+                            <span>完成</span>
+                            <a></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-step-content">
+                <div class="nav-step-pane hidden active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>环境检测</h4>
+                        </div>
+                        <div class="card-body" id="server-info">
+                            --
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-step-pane hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>网站配置</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="install-config-form" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label class="col-xs-12">数据库地址</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="db_hostname" value="localhost">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">数据库端口</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="db_hostport" value="3306">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">数据库用户名</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="db_username" value="root">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">数据库密码</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="db_password" value="mysql">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">数据库名称</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="db_database" value="mysql">
+                                    </div>
+                                </div>
+                            
+                                <div class="divider text-uppercase"
+                                     style="padding-right: 15px;padding-left: 15px;padding-top: 15px;">
+                                    管理员配置
+                                </div>
+                                   <div class="form-group">
+                                    <label class="col-xs-12">后台地址</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="adminurl" id="adminurl" value="admin.php">
+                                        <button class="btn btn-info btn-block lookadminurl">点我查看后台地址说明</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">用户名</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="username" value="admin">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">密码</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" name="password" value="nzhin.123">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12">QQ</label>
+                                    <div class="col-xs-12">
+                                     <input class="form-control" type="text" name="name" value="1449893567">
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-step-pane hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>执行安装</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+                                     aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                正在安装中...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-step-pane hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>安装完成</h4>
+                        </div>
+                        <div class="card-body" id="install-complete">
+                            --
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-step-button">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body text-center">
+                        <button class="btn btn-label btn-info" data-event="next" type="button"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label> 下一步</button>
+                        <button class="btn btn-label btn-info hidden" data-event="finish" type="submit" onclick="layer.load();window.location.href = window.location.protocol + '//'+window.location.host"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label> 完成{$System.Name}安装</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="//static.nanyinet.com/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="//static.nanyinet.com/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//static.nanyinet.com/static/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="//static.nanyinet.com/static/js/jquery.bootstrap.wizard.min.js?v1"></script>
+<script type="text/javascript" src="//static.nanyinet.com/static/vendor/layui/layui.js"></script>
+<link rel="stylesheet" href="http://static.nanyinet.com/static/js/jconfirm/jquery-confirm.min.css">
+<script src="http://static.nanyinet.com/static/js/jconfirm/jquery-confirm.min.js"></script>
+<script type="text/html" id="server-info-html">
+    <div class="input-group m-b-10 info-title">
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">检测项目</span>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">需求</span>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">当前</span>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">状态</span>
+        </div>
+    </div>
+    {{# $.each(d,function (index, item){ }}
+    <div class="input-group m-b-10" style="width: 100%;">
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">{{ item.name }}</span>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">{{ item.demand }}</span>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text">{{ item.current }}</span>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-addon input-group-text {{ item.status ? 'text-primary' : 'text-danger' }}">{{ item.status ? '<i
+                    class="mdi mdi-checkbox-marked-circle-outline"></i> 支持' : '<i
+                    class="mdi mdi-checkbox-marked-circle-outline"></i> 不支持' }}</span>
+            {{#if(!item.status){layui.serverStatus = false;}}}
+        </div>
+    </div>
+    {{# }); }}
+</script>
+<script type="text/html" id="install-complete-html">
+    <div class="input-group" style="text-align: center;display: block;margin-bottom: 15px;">
+        <span style="font-size: 25px;color: #33cabb;">
+            <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+            安装完成
+        </span>
+    </div>
+    <div class="input-group m-b-10" style="width: 100%;">
+        <span class="input-group-addon input-group-text">后台地址：</span>
+        <span class="input-group-addon input-group-text">
+            <a class="btn btn-danger btn-xs" href="{{ window.location.protocol }}//{{ window.location.host }}/{{ d.adminurl }}" target="_blank">
+                点击进入
+            </a>
+        </span>
+    </div>
+    <div class="input-group m-b-10" style="width: 100%;">
+        <span class="input-group-addon input-group-text">用户名：</span>
+        <span class="input-group-addon input-group-text">{{ d.username }}</span>
+    </div>
+    <div class="input-group m-b-10" style="width: 100%;">
+        <span class="input-group-addon input-group-text">密码：</span>
+        <span class="input-group-addon input-group-text">{{ d.password }}</span>
+    </div>
+</script>
+<script>
+$('.lookadminurl').on('click', function () {
+    $.confirm({
+        title: '后台地址说明',
+        content: '自定义后台地址，切记！<br>.php 请勿删除<br>例：admin.php <br>则：您的后台地址就是：域名/admin.php<br>如忘记请到public目录里查看您后台路径<br>后期想修改后台路径请直接重命名您后台入口文件即可！',
+        type: 'green',
+        buttons: {
+            close: {
+                text: '关闭',
+            }
+        }
+    });
+});
+
+function randomString(len) {
+　　len = len || 32;
+　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+　　var maxPos = $chars.length;
+　　var pwd = '';
+　　for (i = 0; i < len; i++) {
+　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+　　}
+　　return pwd;
+}
+$("#adminurl").val(randomString(8)+'.php');
+    var installCompletes = null;
+    layui.use(['form', 'laytpl', 'util'], function () {
+
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+        layui.serverStatus = true;
+
+        var guideObj = $('.guide-box>ul'),
+            guideContentObj = $('.nav-step-content'),
+            guideNumber = 4,
+            step = 1,
+            guideShow = function (i) {
+                step = i + 1;
+
+                guideObj.children('li.complete').removeClass("complete");
+                guideObj.children('li.active').removeClass("active");
+                guideContentObj.children('.nav-step-pane.active').removeClass("active");
+
+                guideObj.children("li:lt(" + step + ")").removeClass("active").addClass("complete");
+                guideContentObj.children(".nav-step-pane:lt(" + i + ")").removeClass("active");
+                guideContentObj.children('.nav-step-pane:nth-child(' + step + ')').addClass('active');
+                if (guideNumber >= step) {
+                    guideObj.children('li:nth-child(' + step + ')').addClass('active');
+                }
+            }, template = function (template, view, data) {
+                var getTpl = layui.$(template).html();
+                layui.laytpl(getTpl).render(data, function (html) {
+                    layui.$(view).html(html);
+                });
+            }, getServerInfo = function () {
+                var loadMsg = layer.load();
+                $.get('{:url("getServerInfo")}', function (res) {
+                    if (res.status === 1) {
+                        template('#server-info-html', '#server-info', res.data);
+                    } else {
+                        layer.msg('获取服务器信息失败');
+                    }
+                }, 'json').fail(function () {
+                    layer.msg('服务器繁忙, 请稍后再试');
+                }).complete(function () {
+                    layer.close(loadMsg);
+                });
+            }, installConfigSubmit = function (callback) {
+                var loadMsg = layer.load();
+                $('[data-event=next]').attr('disabled', true);
+                $.post('{:url("installConfigSubmit")}', $('#install-config-form').serializeObject(), function (res) {
+                    if (res.status === 1) {
+                        typeof callback === 'function' && callback(res);
+                    } else {
+                        layer.msg(res.info, {icon: 'error', time: 1500});
+                    }
+                }, 'json').fail(function () {
+                    layer.msg('服务器繁忙, 请稍后再试');
+                }).complete(function () {
+                    $('[data-event=next]').attr('disabled', false);
+                    layer.close(loadMsg);
+                });
+            }, installComplete = function () {
+                var formObj = $('#install-config-form').serializeObject();
+                $('[data-event=next]').addClass('hidden');
+                $('[data-event=finish]').removeClass('hidden');
+                template('#install-complete-html', '#install-complete', formObj);
+                guideShow(3);
+            }, startInstall = function () {
+                $.get('{:url("startInstall")}', function (res) {
+                    if (res.status === 1) {
+                        installComplete();
+                    } else {
+                        guideShow(1);
+                        layer.alert(res.info, {icon: 'error', time: 0});
+                    }
+                }, 'json').fail(function () {
+                    guideShow(1);
+                    layer.msg('服务器繁忙, 请稍后再试');
+                }).complete(function () {
+                    $('[data-event=next]').attr('disabled', false);
+                });
+            };
+
+        getServerInfo();
+
+        installCompletes = installComplete;
+
+        layui.util.event('data-event', {
+            next: function (_this) {
+                switch (step) {
+                    case 1:
+                        if (!layui.serverStatus) {
+                            return layer.msg('环境检测不通过!');
+                        }
+                        guideShow(1);
+                        break;
+                    case 2:
+                        installConfigSubmit(function () {
+                            guideShow(2);
+                            startInstall();
+                        });
+                        break;
+                    default:
+                        layer.msg('不存在的选项');
+                        break;
+                }
+            },
+        })
+    });
+</script>
+</body>
+</html>

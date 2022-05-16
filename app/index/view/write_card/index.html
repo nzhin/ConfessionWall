@@ -1,0 +1,68 @@
+{include file="Public/header" title="我要表白"/}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<link rel="stylesheet" href="../../static/layui/css/layui.css"/>
+<!-- 内容标题 -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">
+                填写表白卡
+            </h4>
+        </div>
+    </div>
+</div>
+<!-- 内容标题 -->
+
+<!-- 表单 -->
+<div class="account-pages mt-5 mb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card">
+                    <!-- Logo -->
+                    <div class="btn btn-block btn-danger">
+                        <h1 style="font-size:20px">表白卡</h1>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="text-center w-75 m-auto">
+                            <h4 class="text-dark-50 text-center mt-3 font-weight-bold">请认真填写哦</h4>
+                        </div>
+                        <!--表单-->
+                        <form class="needs-validation">
+                            <div class="form-group mb-3">
+                                <label>我是</label>
+                                <input type="text" class="form-control" name="name1" placeholder="选填/默认不填为“匿名卡"/><br>
+                                <label>Ta是</label>
+                                <input type="text" class="form-control" name="name2" placeholder="必填"/><br>
+                                <label>上传图片</label>
+                                <div class="input-group" id="ImgUpload">
+                                    <!-- 图片上传 -->
+                                    <input id="url" type="text" name='img' class="form-control col-md-8" placeholder="选填图片URL/默认不填为“无图卡" >
+                                    <!-- 图片上传 -->
+                                </div><br>
+                                <label>我想说</label>
+                                <textarea name="cont" rows="6" class="form-control" maxlength="60" placeholder="必填"></textarea>
+                            </div>
+                            <button id="WriteSubmit" type="submit" value="提交" class="foot-right btn btn-danger">提交</button>
+                        </form>
+                        <!--表单-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 内容标题 -->
+{include file="Public/footer" /}

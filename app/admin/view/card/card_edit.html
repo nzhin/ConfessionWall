@@ -1,0 +1,106 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+        <div class="layui-card-header">修改表白卡</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item" hidden>
+                        <input name="id" value="{$data.id}" class="layui-input" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-required">写卡人</label>
+                        <input name="name_1" value="{$data.name_1}" placeholder="请输入写卡人" class="layui-input" lay-verType="tips" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-required">写卡对象</label>
+                        <input name="name_2" value="{$data.name_2}" placeholder="请输入写卡对象" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-required">图片</label>
+                        <div>
+                            <input name="img" style="display:inline-block; ;width:58% " value="{$data.img}" id="image-upload-value" placeholder="请输入图片地址或者上传图片" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required" required/>
+                            <button type="button" class="layui-btn layui-btn" id="image-upload" style="margin-left:0px" >
+                                <i class="layui-icon"></i>图片
+                            </button>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-required">内容</label>
+                        <input name="cont" value="{$data.cont}" placeholder="请输入内容" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" lay-submit lay-filter="auth_edit">确认修改</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- js部分 -->
+{include file='public/script'}
+
+<script>
+    layui.use(['layer', 'form','formX', 'upload'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var upload = layui.upload;
+
+        //上传图片
+        upload.render({
+            elem: '#image-upload',
+            url: '{:url(\'/Ajax/upload\')}',
+            dataType: "json",
+            before: function () {
+                loadMsg = layer.msg('上传中...', {icon: 16, shade: 0.01, time: false});
+            },
+            done: function (res) {
+                layer.close(loadMsg);
+                if (res.status == 1) {
+                    layer.msg(res.info, {icon: 6, time: 1500});
+                    $('#image-upload-value').val(res.location);
+                } else {
+                    layer.msg(res.info, {icon: 5});
+                }
+            },
+            error: function () {
+                layer.close(loadMsg);
+                layer.msg('服务器繁忙，请稍后再试!', {icon: 5});
+            }
+        });
+
+        form.on('submit(auth_edit)', function (obj) {
+            var loadIndex = layer.msg('正在处理中，请稍后...');
+            $.post('{:url(\'/Ajax/card_edit\')}', obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.code === 1) {
+                    layer.msg(res.msg, {icon: 6, time: 1500});
+                } else {
+                    layer.msg(res.msg, {icon: 5, anim: 6});
+                }
+            }, 'json');
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

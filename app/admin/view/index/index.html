@@ -1,0 +1,197 @@
+{include file='/public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部 -->
+    <div class="layui-header">
+        <div class="layui-logo">
+            <img src="/logo.png"/>
+        </div>
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="flexible" title="侧边伸缩"><i class="layui-icon layui-icon-shrink-right"></i></a>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="note" title="便签"><i class="layui-icon layui-icon-note"></i></a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                <a ew-event="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a>
+                    <img src="{$QQ_Photo}" class="layui-nav-img">
+                    <cite>{:session('adminname')}</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd lay-unselect><a ew-href="{:url('/index/self_edit')}">个人中心</a></dd>
+                    <dd lay-unselect><a ew-href="{:url('/index/website')}">网站设置</a></dd>
+                    <dd lay-unselect><a id="clear">清除缓存</a></dd>
+                    <hr>
+                    <dd lay-unselect><a id="logout">退出</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="theme" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div class="layui-side">
+        <div class="layui-side-scroll">
+            <!-- Url系统菜单 -->
+            <ul class="layui-nav layui-nav-tree arrow2" lay-filter="admin-side-nav" lay-shrink="_all">
+                <li class="layui-nav-item">
+                    <a lay-href="{:url('/Index/home')}"><i class="layui-icon layui-icon-home"></i>&emsp;<cite>控制台</cite></a>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-windows"></i>&emsp;<cite>系统管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="{:url('/Index/website')}">网站配置</a></dd>
+                        <dd><a lay-href="{:url('/Index/self_edit')}">个人信息</a></dd>
+                        {empty name='admin.qqopenid'}
+                        <dd><a href="{:url('/Ajax/bindqq')}">绑定QQ登录</a></dd>
+                        {else}
+                        <dd><a href="{:url('/Ajax/bindqq')}">重新绑定QQ登录</a></dd>
+                        <dd><a id="unboundqq">解除绑定QQ登录</a></dd>
+                        {/empty}
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-auz"></i>&emsp;<cite>表白卡管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="{:url('/Card/card_list')}">表白卡列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-app"></i>&emsp;<cite>评论管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="{:url('/Comment/comment_list')}">评论列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-senior"></i>&emsp;<cite>后台管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="{:url('/Admin/admin_add')}">添加管理</a></dd>
+                        <dd><a lay-href="{:url('/Admin/admin_list')}">管理列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-set-fill"></i>&emsp;<cite>系统工具</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="{:url('/System/system_debug')}">调试模式</a></dd>
+                        <dd><a lay-href="http://www.nzhin.cn/">作者主页</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 主体部分 -->
+    <div class="layui-body"></div>
+    <!-- 底部 -->
+    <div class="layui-footer layui-text">
+        copyright © {$date} <a href="/" target="_blank">{$System.Name}</a> all rights reserved.
+        <span class="pull-right">Version {$Version}</span>
+    </div>
+</div>
+
+<!-- 加载动画 -->
+<div class="page-loading">
+    <div class="ball-loader">
+        <span></span><span></span><span></span><span></span>
+    </div>
+</div>
+
+<!-- js部分 -->
+{include file='public/script'}
+<script>
+    layui.use(['index'], function () {
+        var $ = layui.jquery;
+        var index = layui.index;
+
+        $('#clear').click(function () {
+            parent.layui.admin.confirm('确认清除系统缓存吗？', function (index) {
+                parent.layer.close(index);
+                layer.msg('正在处理中，请稍后...');
+                $.ajax({
+                    type:'POST',
+                    url:'{:url(\'/Ajax/clear\')}',
+                    dataType:'json',
+                    success:function (data){
+                        if(data.code == 1){
+                            layer.msg(data.msg, {icon: 6, time: 1500});
+                        }else{
+                            layer.msg(data.msg, {icon: 5, anim: 6});
+                        }
+                    }
+                });
+            });
+        });
+
+        $('#unboundqq').click(function () {
+            parent.layui.admin.confirm('确认解除绑定QQ登录吗？', function (index) {
+                parent.layer.close(index);
+                layer.msg('正在处理中，请稍后...');
+                $.ajax({
+                    type:'POST',
+                    url:'{:url(\'/Ajax/unboundqq\')}',
+                    dataType:'json',
+                    success:function (data){
+                        if(data.code == 1){
+                            layer.msg(data.msg, {icon: 6, time: 1500});
+                            parent.location.reload();
+                        }else{
+                            layer.msg(data.msg, {icon: 5, anim: 6});
+                        }
+                    }
+                });
+            });
+        });
+        $('#logout').click(function () {
+            parent.layui.admin.confirm('确定要退出登录吗？', function (index) {
+                parent.layer.close(index);
+                layer.msg('正在处理中，请稍后...');
+                $.ajax({
+                    type:'POST',
+                    url:'{:url(\'/index/index\')}?logout=Nathan',
+                    dataType:'json',
+                    success:function (data){
+                        if(data.code == 1){
+                            layer.msg(data.msg, {icon: 6, time: 1500}, function () {
+                                location.href = '{:url(\'/index/login\')}'
+                            });
+                        }else{
+                            layer.msg(data.msg, {icon: 5, anim: 6});
+                        }
+                    }
+                });
+            });
+        });
+        // 默认加载主页
+        index.loadHome({
+            menuPath: '{:url(\'/Index/home\')}',
+            menuName: '<i class="layui-icon layui-icon-home"></i>'
+        });
+
+    });
+</script>
+</body>
+</html>

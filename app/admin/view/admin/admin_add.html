@@ -1,0 +1,80 @@
+{include file='public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid" style="padding-bottom: 75px;">
+    <div class="layui-card">
+        <div class="layui-card-header">添加管理员</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-required">用户名：</label>
+                        <input name="adminname" placeholder="请输入管理员用户名" class="layui-input" lay-verType="tips" minlength="5" lay-verify="required|h5" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-required">密码：</label>
+                        <input name="password" placeholder="请输入管理员密码" class="layui-input" lay-verType="tips" minlength="5" lay-verify="required|h5" required/>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-required">QQ：</label>
+                            <input name="qq" placeholder="请输入管理员QQ" class="layui-input" lay-verType="tips" maxlength="10" lay-verify="required|h5" required/>
+                        </div>
+                        <div class="layui-inline">
+                            <label>邮箱：</label>
+                            <input name="email" placeholder="请输入管理员邮箱" class="layui-input" lay-verify="emailX" lay-verType="tips"/>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label>状态：</label>
+                        <input type="radio" name="state" value="1" title="正常" checked>
+                        <input type="radio" name="state" value="0" title="异常">
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" lay-submit lay-filter="admin_add">确认添加</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- js部分 -->
+{include file='public/script'}
+
+<script>
+    layui.use(['layer', 'form','formX'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        form.on('submit(admin_add)', function (obj) {
+            var loadIndex = layer.msg('正在处理中，请稍后...');
+            $.post('{:url(\'/Ajax/admin_add\')}', obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.code === 1) {
+                    layer.msg(res.msg, {icon: 6, time: 1500});
+                } else {
+                    layer.msg(res.msg, {icon: 5, anim: 6});
+                }
+            }, 'json');
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

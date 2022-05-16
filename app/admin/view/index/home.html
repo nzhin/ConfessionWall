@@ -1,0 +1,348 @@
+{include file='/public/header'}
+<!--
+// +---------------------------------------------+
+// | Name: ConfessionWall
+// +---------------------------------------------+
+// | Author: White.【Nzhin】<www.nzhin.cn>
+// +---------------------------------------------+
+// | Contact: QQ：1449893567
+// +---------------------------------------------+
+// | Created: PHPStorm
+// +---------------------------------------------+
+// | Date: 2022年5月15日
+// +---------------------------------------------+
+-->
+<style>
+    /** 应用快捷块样式 */
+    .console-app-group {
+        padding: 16px;
+        border-radius: 4px;
+        text-align: center;
+        background-color: #fff;
+        cursor: pointer;
+        display: block;
+    }
+
+    .console-app-group .console-app-icon {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        margin-bottom: 6px;
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-size: 32px;
+        color: #69c0ff;
+    }
+
+    .console-app-group:hover {
+        box-shadow: 0 0 15px rgba(0, 0, 0, .08);
+    }
+    /** //应用快捷块样式 */
+</style>
+</head>
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid ew-console-wrapper">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    系统表白卡总数<span class="layui-badge layui-badge-green pull-right">个</span>
+                </div>
+                <div class="layui-card-body">
+                    <p class="lay-big-font">{$card}</p>
+                    <p>异常表白卡数<span class="pull-right">{$error_card} 个</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    系统总点赞数<span class="layui-badge layui-badge-yellow pull-right">个</span>
+                </div>
+                <div class="layui-card-body">
+                    <p class="lay-big-font">{$zan}</p>
+                    <p>异常点赞数<span class="pull-right">{$error_zan} 个</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    系统评论总数<span class="layui-badge layui-badge-blue pull-right">个</span>
+                </div>
+                <div class="layui-card-body">
+                    <p class="lay-big-font">{$comment}</p>
+                    <p>异常评论数<span class="pull-right">{$error_comment} 个</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    系统用户总数<span class="layui-badge layui-badge-red pull-right">个</span>
+                </div>
+                <div class="layui-card-body">
+                    <p class="lay-big-font">{$user}</p>
+                    <p>异常用户数<span class="pull-right">{$error_user} 个</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 快捷方式 -->
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6" style="padding-bottom: 0;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-xs6 layui-col-sm4">
+                    <div class="console-app-group" ew-href="{:url('/Card/card_list')}" ew-title="表白卡管理">
+                        <i class="console-app-icon layui-icon layui-icon-auz"
+                           style="color: #95de64;"></i>
+                        <div class="console-app-name">表白卡管理</div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4">
+                    <div class="console-app-group" ew-href="{:url('/Comment/Comment_list')}" ew-title="评论管理">
+                        <i class="console-app-icon layui-icon layui-icon-app"
+                           style="color: #ff85c0;font-size: 28px;"></i>
+                        <div class="console-app-name">评论管理</div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm4">
+                    <div class="console-app-group" ew-href="{:url('/Admin/admin_add')}" ew-title="添加用户">
+                        <i class="console-app-icon layui-icon layui-icon-username"
+                           style="color: #ff9c6e;"></i>
+                        <div class="console-app-name">添加管理员</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm6" style="padding-bottom: 0;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-xs6 layui-col-sm4">
+                    <div class="console-app-group" ew-href="{:url('/Admin/admin_list')}" ew-title="用户管理">
+                        <i class="console-app-icon layui-icon layui-icon-group"
+                           style="color: #b37feb;font-size: 30px;"></i>
+                        <div class="console-app-name">管理员列表</div>
+                    </div>
+                </div>
+                <div class="layui-col-xs6 layui-col-sm4">
+                    <div class="console-app-group" ew-href="{:url('/Index/self_edit')}" ew-title="个人中心">
+                        <i class="console-app-icon layui-icon layui-icon-diamond"
+                           style="color: #95de64;"></i>
+                        <div class="console-app-name">个人中心</div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm4">
+                    <div class="console-app-group" ew-href="{:url('/index/website')}" ew-title="网站设置">
+                        <i class="console-app-icon layui-icon layui-icon-windows"
+                           style="color: #95de64;"></i>
+                        <div class="console-app-name">网站设置</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md4 layui-col-sm6">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body">
+                    <table class="layui-table layui-text">
+                        <colgroup>
+                            <col width="90">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>系统名称</td>
+                            <td>{$Copyright.Name}&emsp; <button id="clear" class="layui-btn layui-btn-danger layui-btn-sm">清除系统缓存</button></td>
+                        </tr>
+                        <tr>
+                            <td>系统作者</td>
+                            <td>{$Copyright.Author}</td>
+                        </tr>
+                        <tr>
+                            <td>当前版本</td>
+                            <td>Version {$Version}</td>
+                        </tr>
+                        <script type="text/html" ew-tpl>
+                            <tr>
+                                <td>前端基于</td>
+                                <td>Layui-v{{layui.v}}</td>
+                            </tr>
+                        </script>
+                        <tr>
+                            <td>后端基于</td>
+                            <td>{$ThinkPHP_Version}</td>
+                        </tr>
+                        <tr>
+                            <td>主要特色</td>
+                            <td>{$Copyright.Description}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4 layui-col-sm6">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body">
+                    <table class="layui-table layui-text">
+                        <colgroup>
+                            <col width="130">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>服务器域名/IP</td>
+                            <td>{$System.domian}</td>
+                        </tr>
+                        <tr>
+                            <td>服务器操作系统</td>
+                            <td>{$System.os}</td>
+                        </tr>
+                        <tr>
+                            <td>服务器环境</td>
+                            <td>{$System.software}</td>
+                        </tr>
+                        <tr>
+                            <td>PHP 版本</td>
+                            <td>{$System.phpVersion}</td>
+                        </tr>
+                        <tr>
+                            <td>服务器语言</td>
+                            <td>{$System.serverLanguage}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4 layui-col-sm6">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body">
+                    <table class="layui-table layui-text">
+                        <colgroup>
+                            <col width="130">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>最大占用内存</td>
+                            <td>{$System.memoryLimit}</td>
+                        </tr>
+                        <tr>
+                            <td>最大执行时间</td>
+                            <td>{$System.maxExecutionTime}</td>
+                        </tr>
+                        <tr>
+                            <td>文件上传限制</td>
+                            <td>{$System.fileUploadSize}</td>
+                        </tr>
+                        <tr>
+                            <td>POST限制</td>
+                            <td>{$System.postMaxSize}</td>
+                        </tr>
+                        <tr>
+                            <td>网站目录</td>
+                            <td>{$System.root}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6 layui-col-sm6">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    当前时间
+                    <i class="layui-icon layui-icon-tips" lay-tips="当前时间" lay-bg="#803ed9"
+                       lay-bgImg="linear-gradient(to right,#8510FF,#D025C2,#FF8B2D,#F64E2C)" lay-offset="5"></i>
+                </div>
+                <div class="layui-card-body layui-text layadmin-text">
+                    <blockquote class="layui-elem-quote layui-quote-nm">
+                        <p class="nathan_time_txt">--</p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6 layui-col-sm6">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    每日心语
+                    <i class="layui-icon layui-icon-tips" lay-tips="{$hitokoto}" lay-bg="#803ed9"
+                       lay-bgImg="linear-gradient(to right,#8510FF,#D025C2,#FF8B2D,#F64E2C)" lay-offset="5"></i>
+                </div>
+                <div class="layui-card-body layui-text layadmin-text">
+                    <blockquote class="layui-elem-quote layui-quote-nm">
+                        <p>{$hitokoto}</p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- js部分 -->
+{include file='public/script'}
+<script>
+    layui.use(['layer', 'carousel', 'element'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var carousel = layui.carousel;
+        var device = layui.device();
+
+        $('#clear').click(function () {
+            parent.layui.admin.confirm('确认清除系统缓存吗？', function (index) {
+                parent.layer.close(index);
+                layer.msg('正在处理中，请稍后...');
+                $.ajax({
+                    type:'POST',
+                    url:'{:url(\'/Ajax/clear\')}',
+                    dataType:'json',
+                    success:function (data){
+                        if(data.code == 1){
+                            layer.msg(data.msg, {icon: 6, time: 1500});
+                        }else{
+                            layer.msg(data.msg, {icon: 5, anim: 6});
+                        }
+                    }
+                });
+            });
+        });
+
+        showDateText = function () {
+            let myDate = new Date;
+            let year = myDate.getFullYear(); //获取当前年
+            let mon = myDate.getMonth() + 1; //获取当前月
+            let date = myDate.getDate(); //获取当前日
+            let h = myDate.getHours();//获取当前小时数(0-23)
+            let m = myDate.getMinutes();//获取当前分钟数(0-59)
+            let s = myDate.getSeconds();//获取当前秒
+            let week = myDate.getDay();
+            let weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+            $(".nathan_time_txt").text(year + "年" + mon + "月" + date + "日 " + h + "时" + m + "分" + s + "秒 " + weeks[week]);
+        };
+        showDateText();
+        setInterval(showDateText, 1000);
+        // 渲染轮播
+        carousel.render({
+            elem: '#workplaceNewsCarousel',
+            width: '100%',
+            height: '70px',
+            arrow: 'none',
+            autoplay: true,
+            trigger: device.ios || device.android ? 'click' : 'hover',
+            anim: 'fade'
+        });
+
+    });
+</script>
+</body>
+</html>
